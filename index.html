@@ -1,14 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Rubik Speed Timer</title>
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>Speed Timer</title>
 
 <style>
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent
+  -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
@@ -17,1550 +19,1073 @@ html,body{
   height:100%;
   overflow:hidden;
   background:#050505;
-  color:#fff;
-  font-family:Arial,sans-serif
+  color:white;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
 
-button{
-  font:inherit
+body{
+  display:flex;
+  justify-content:center;
 }
 
-#app{
-  position:fixed;
-  inset:0;
-  background:#050505;
-  touch-action:none;
-  user-select:none
+.app{
+  width:100%;
+  max-width:700px;
+  height:100vh;
+  position:relative;
+  padding:18px 16px 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
-#scramble{
-  position:absolute;
-  top:18px;
-  left:12px;
-  right:12px;
+/* ================= SCRAMBLE ================= */
+
+.scramble{
+  width:100%;
+  max-width:650px;
   text-align:center;
-  font-size:clamp(18px,5vw,34px);
-  font-weight:800;
-  line-height:1.3
-}
-
-#hint{
-  position:absolute;
-  top:78px;
-  left:0;
-  right:0;
-  text-align:center;
-  color:#666;
-  font-size:14px
-}
-
-#timer{
-  position:absolute;
-  inset:0;
+  font-size:25px;
+  line-height:1.35;
+  font-weight:700;
+  min-height:70px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:clamp(82px,23vw,175px);
+  padding:4px 10px;
+  margin-top:8px;
+}
+
+/* ================= INSPECTION ================= */
+
+.instruction{
+  color:#777;
+  font-size:19px;
+  margin-top:8px;
+  min-height:28px;
+  text-align:center;
+}
+
+/* ================= TIMER ================= */
+
+.timer{
+  font-size:120px;
+  line-height:1;
   font-weight:700;
   letter-spacing:-5px;
-  pointer-events:none
+  margin-top:65px;
+  height:135px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-#stats{
-  position:absolute;
-  left:50%;
-  bottom:125px;
-  transform:translateX(-50%);
-  width:calc(100% - 155px);
+/* ================= MINI CUBE ================= */
+
+.cube-area{
+  width:100%;
   display:flex;
   justify-content:center;
-  align-items:center;
-  gap:45px;
-  white-space:nowrap;
-  font-size:18px;
-  pointer-events:none
+  margin-top:15px;
 }
 
-#stats b{
-  font-size:29px
-}
-
-/* MINI CUBE */
-
-#cube{
-  position:absolute;
-  left:12px;
-  bottom:90px;
-  width:115px;
-  height:115px;
-  padding:4px;
-  border-radius:10px;
-  background:#111;
+.cube{
+  width:190px;
+  height:190px;
   display:grid;
-  grid-template-columns:repeat(12,1fr);
-  grid-template-rows:repeat(9,1fr);
-  gap:2px;
-  pointer-events:none
+  grid-template-columns:repeat(12,15px);
+  grid-template-rows:repeat(9,15px);
+  gap:1px;
+  justify-content:center;
+  align-content:center;
 }
+
+/*
+Net:
+
+              U
+          L   F   R   B
+              D
+*/
+
+.sticker{
+  width:15px;
+  height:15px;
+  border-radius:2px;
+}
+
+/* positions in 12x9 net */
+
+.u{ grid-column:4 / span 3; }
+.l{ grid-column:1 / span 3; }
+.f{ grid-column:4 / span 3; }
+.r{ grid-column:7 / span 3; }
+.b{ grid-column:10 / span 3; }
+.d{ grid-column:4 / span 3; }
 
 .face{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  grid-template-rows:repeat(3,1fr);
-  gap:2px
+  grid-template-columns:repeat(3,15px);
+  grid-template-rows:repeat(3,15px);
+  gap:1px;
 }
 
-.s{
-  border-radius:2px
-}
+.face.u{ grid-row:1; }
+.face.l,.face.f,.face.r,.face.b{ grid-row:4; }
+.face.d{ grid-row:7; }
 
-#U{
-  grid-column:4/7;
-  grid-row:1/4
-}
+.white{background:#f5f5f5;}
+.yellow{background:#ffd91a;}
+.green{background:#18c46b;}
+.blue{background:#2388ff;}
+.red{background:#ef3b3b;}
+.orange{background:#ff8717;}
 
-#L{
-  grid-column:1/4;
-  grid-row:4/7
-}
+/* ================= STATS ================= */
 
-#F{
-  grid-column:4/7;
-  grid-row:4/7
-}
-
-#R{
-  grid-column:7/10;
-  grid-row:4/7
-}
-
-#B{
-  grid-column:10/13;
-  grid-row:4/7
-}
-
-#D{
-  grid-column:4/7;
-  grid-row:7/10
-}
-
-/* HISTORY BUTTON */
-
-#historyBtn{
-  position:absolute;
-  left:50%;
-  bottom:32px;
-  transform:translateX(-50%);
-  z-index:5;
-  border:0;
-  border-radius:20px;
-  background:#191919;
-  color:#fff;
-  padding:14px 62px;
-  font-size:20px;
-  font-weight:800
-}
-
-/* HISTORY PAGE */
-
-#history{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:20;
-  background:#080808;
-  overflow:auto
-}
-
-#head{
-  position:sticky;
-  top:0;
-  height:70px;
-  background:#111;
+.stats{
   display:flex;
+  justify-content:center;
   align-items:center;
-  padding:0 12px;
-  z-index:2
+  gap:55px;
+  margin-top:18px;
+  font-size:28px;
+  white-space:nowrap;
 }
 
-#back{
+.stat-label{
+  color:#eee;
+}
+
+/* ================= HISTORY ================= */
+
+.history-btn{
+  width:75%;
+  max-width:430px;
+  height:75px;
+  border:0;
+  border-radius:30px;
+  background:#1c1c1c;
+  color:white;
+  font-size:23px;
+  font-weight:700;
+  margin-top:22px;
+}
+
+.history-btn:active{
+  background:#292929;
+}
+
+/* ================= HISTORY PANEL ================= */
+
+.history-panel{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:65vh;
+  background:#151515;
+  border-radius:30px 30px 0 0;
+  padding:22px 18px;
+  transform:translateY(110%);
+  transition:.25s ease;
+  z-index:20;
+  overflow:auto;
+}
+
+.history-panel.open{
+  transform:translateY(0);
+}
+
+.history-title{
+  text-align:center;
+  font-size:26px;
+  font-weight:700;
+  margin-bottom:20px;
+}
+
+.close-history{
+  position:absolute;
+  right:20px;
+  top:17px;
   border:0;
   background:none;
-  color:#fff;
-  font-size:45px;
-  width:52px
+  color:white;
+  font-size:28px;
 }
 
-#title{
-  font-size:24px;
-  font-weight:800
+.solve-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:13px 8px;
+  border-bottom:1px solid #333;
+  font-size:20px;
 }
 
-#clear{
-  margin-left:auto;
-  border:0;
-  border-radius:10px;
-  background:#252525;
-  color:#fff;
-  padding:9px 12px
-}
-
-#list{
-  padding:12px
-}
-
-.item{
-  background:#151515;
-  border-radius:15px;
-  padding:13px;
-  margin-bottom:10px
-}
-
-.time{
-  font-size:29px;
-  font-weight:800
-}
-
-.dnf{
-  color:#ff453a
-}
-
-.p2{
-  color:#ffd02f
-}
-
-.scr{
-  margin-top:7px;
-  color:#999;
-  font-size:14px;
-  line-height:1.4
-}
-
-.actions{
+.solve-actions{
   display:flex;
   gap:7px;
-  flex-wrap:wrap;
-  margin-top:10px
 }
 
-.actions button{
+.solve-actions button{
   border:0;
-  border-radius:9px;
-  background:#252525;
-  color:#fff;
-  padding:8px 11px
+  border-radius:8px;
+  background:#292929;
+  color:white;
+  padding:7px 9px;
 }
 
-.empty{
-  text-align:center;
-  color:#777;
-  padding:50px
+.clear-all{
+  width:100%;
+  margin-top:20px;
+  padding:13px;
+  border:0;
+  border-radius:14px;
+  background:#292929;
+  color:white;
+  font-size:17px;
 }
 
-@media(max-height:700px){
+/* ================= MOBILE ================= */
 
-  #stats{
-    bottom:92px
+@media(max-width:500px){
+
+  .app{
+    padding-top:12px;
   }
 
-  #historyBtn{
-    bottom:15px
+  .scramble{
+    font-size:22px;
+    min-height:76px;
+    margin-top:3px;
   }
 
-  #cube{
-    bottom:65px
+  .instruction{
+    font-size:17px;
+    margin-top:4px;
   }
 
+  .timer{
+    font-size:95px;
+    height:110px;
+    margin-top:50px;
+  }
+
+  .cube-area{
+    margin-top:5px;
+  }
+
+  .cube{
+    transform:scale(.92);
+    transform-origin:center;
+  }
+
+  .stats{
+    font-size:25px;
+    gap:38px;
+    margin-top:8px;
+  }
+
+  .history-btn{
+    height:68px;
+    margin-top:18px;
+    font-size:21px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div id="app">
+<div class="app">
 
-  <div id="scramble">---</div>
+  <div id="scramble" class="scramble"></div>
 
-  <div id="hint">
+  <div id="instruction" class="instruction">
     Chạm để bắt đầu inspection
   </div>
 
-  <div id="timer">
-    0.00
+  <div id="timer" class="timer">0.00</div>
+
+  <div class="cube-area">
+    <div id="cube" class="cube"></div>
   </div>
 
-  <div id="cube"></div>
+  <div class="stats">
+    <div class="stat-label">
+      Solves: <span id="solves">0</span>
+    </div>
 
-  <div id="stats">
-    <span>
-      Solves: <b id="solves">0</b>
-    </span>
-
-    <span>
-      PB: <b id="pb">--</b>
-    </span>
+    <div class="stat-label">
+      PB: <span id="pb">--</span>
+    </div>
   </div>
 
-  <button id="historyBtn">
+  <button class="history-btn" id="historyBtn">
     HISTORY
   </button>
 
-</div>
+  <div class="history-panel" id="historyPanel">
+    <button class="close-history" id="closeHistory">×</button>
 
+    <div class="history-title">HISTORY</div>
 
-<div id="history">
+    <div id="historyList"></div>
 
-  <div id="head">
-
-    <button id="back">
-      ‹
+    <button class="clear-all" id="clearAll">
+      CLEAR ALL
     </button>
-
-    <div id="title">
-      History
-    </div>
-
-    <button id="clear">
-      Clear All
-    </button>
-
   </div>
 
-  <div id="list"></div>
-
 </div>
-
 
 <script>
 
-/* =========================
-   MÀU CUBE
-========================= */
+/* =========================================================
+   3D STICKER CUBE
+   ========================================================= */
 
-const COLORS={
-  U:"#fff",
-  R:"#e53935",
-  F:"#21c66b",
-  D:"#ffd92f",
-  L:"#ff8a18",
-  B:"#2f7df6"
+const COLORS = {
+  U:"white",
+  D:"yellow",
+  F:"green",
+  B:"blue",
+  R:"red",
+  L:"orange"
 };
 
-const faces=[
-  "U",
-  "R",
-  "F",
-  "D",
-  "L",
-  "B"
-];
+/*
+ Mỗi sticker có:
+ position = vị trí cubie
+ normal   = mặt sticker đang hướng ra ngoài
 
-let cube={};
+ x: L=-1, M=0, R=1
+ y: D=-1, E=0, U=1
+ z: B=-1, M=0, F=1
+*/
 
-let scramble=[];
+let stickers = [];
+
+function createSolvedCube(){
+
+  stickers=[];
+
+  const faces=[
+    {face:"U", normal:[0,1,0]},
+    {face:"D", normal:[0,-1,0]},
+    {face:"F", normal:[0,0,1]},
+    {face:"B", normal:[0,0,-1]},
+    {face:"R", normal:[1,0,0]},
+    {face:"L", normal:[-1,0,0]}
+  ];
+
+  for(const f of faces){
+
+    for(let row=0;row<3;row++){
+
+      for(let col=0;col<3;col++){
+
+        let x=0,y=0,z=0;
+
+        if(f.face==="U"){
+          x=col-1;
+          y=1;
+          z=row-1;
+        }
+
+        if(f.face==="D"){
+          x=col-1;
+          y=-1;
+          z=1-row;
+        }
+
+        if(f.face==="F"){
+          x=col-1;
+          y=1-row;
+          z=1;
+        }
+
+        if(f.face==="B"){
+          x=1-col;
+          y=1-row;
+          z=-1;
+        }
+
+        if(f.face==="R"){
+          x=1;
+          y=1-row;
+          z=1-col;
+        }
+
+        if(f.face==="L"){
+          x=-1;
+          y=1-row;
+          z=col-1;
+        }
+
+        stickers.push({
+          color:f.face,
+          x,y,z,
+          nx:f.normal[0],
+          ny:f.normal[1],
+          nz:f.normal[2]
+        });
+
+      }
+    }
+  }
+}
+
+/* ================= ROTATION ================= */
+
+function rotateVector(v,axis,dir){
+
+  let [x,y,z]=v;
+
+  if(axis==="x"){
+
+    if(dir===-1){
+      return [x,z,-y];
+    }else{
+      return [x,-z,y];
+    }
+
+  }
+
+  if(axis==="y"){
+
+    if(dir===-1){
+      return [-z,y,x];
+    }else{
+      return [z,y,-x];
+    }
+
+  }
+
+  if(axis==="z"){
+
+    if(dir===-1){
+      return [y,-x,z];
+    }else{
+      return [-y,x,z];
+    }
+
+  }
+}
+
+function rotateLayer(axis,layer,dir){
+
+  for(const s of stickers){
+
+    if(
+      (axis==="x" && s.x===layer) ||
+      (axis==="y" && s.y===layer) ||
+      (axis==="z" && s.z===layer)
+    ){
+
+      let p=rotateVector([s.x,s.y,s.z],axis,dir);
+
+      s.x=p[0];
+      s.y=p[1];
+      s.z=p[2];
+
+      let n=rotateVector([s.nx,s.ny,s.nz],axis,dir);
+
+      s.nx=n[0];
+      s.ny=n[1];
+      s.nz=n[2];
+    }
+  }
+}
+
+/* ================= SINGMASTER MOVES ================= */
+
+function move(face){
+
+  switch(face){
+
+    case "R":
+      rotateLayer("x",1,-1);
+      break;
+
+    case "L":
+      rotateLayer("x",-1,1);
+      break;
+
+    case "U":
+      rotateLayer("y",1,-1);
+      break;
+
+    case "D":
+      rotateLayer("y",-1,1);
+      break;
+
+    case "F":
+      rotateLayer("z",1,-1);
+      break;
+
+    case "B":
+      rotateLayer("z",-1,1);
+      break;
+  }
+}
+
+function applyMove(m){
+
+  let face=m[0];
+
+  move(face);
+
+  if(m.includes("2")){
+    move(face);
+  }
+}
+
+/* =========================================================
+   SCRAMBLE
+   ========================================================= */
+
+const faces=["R","L","U","D","F","B"];
+const axes={
+  R:"x",L:"x",
+  U:"y",D:"y",
+  F:"z",B:"z"
+};
+
+function randomScramble(){
+
+  let result=[];
+  let lastFace=null;
+  let lastAxis=null;
+
+  while(result.length<20){
+
+    const face=
+      faces[Math.floor(Math.random()*faces.length)];
+
+    const axis=axes[face];
+
+    if(face===lastFace) continue;
+    if(axis===lastAxis) continue;
+
+    const suffixes=["","'","2"];
+    const suffix=
+      suffixes[Math.floor(Math.random()*suffixes.length)];
+
+    result.push(face+suffix);
+
+    lastFace=face;
+    lastAxis=axis;
+  }
+
+  return result;
+}
+
+/* =========================================================
+   MINI CUBE RENDER
+   ========================================================= */
+
+function getFaceStickers(face){
+
+  return stickers.filter(s=>{
+
+    if(face==="U") return s.ny===1;
+    if(face==="D") return s.ny===-1;
+    if(face==="F") return s.nz===1;
+    if(face==="B") return s.nz===-1;
+    if(face==="R") return s.nx===1;
+    if(face==="L") return s.nx===-1;
+
+  });
+}
+
+function sortFace(face,list){
+
+  return list.sort((a,b)=>{
+
+    let ra,rb,ca,cb;
+
+    if(face==="U"){
+      ra=-a.z;
+      rb=-b.z;
+      ca=a.x;
+      cb=b.x;
+    }
+
+    if(face==="D"){
+      ra=a.z;
+      rb=b.z;
+      ca=a.x;
+      cb=b.x;
+    }
+
+    if(face==="F"){
+      ra=-a.y;
+      rb=-b.y;
+      ca=a.x;
+      cb=b.x;
+    }
+
+    if(face==="B"){
+      ra=-a.y;
+      rb=-b.y;
+      ca=-a.x;
+      cb=-b.x;
+    }
+
+    if(face==="R"){
+      ra=-a.y;
+      rb=-b.y;
+      ca=-a.z;
+      cb=-b.z;
+    }
+
+    if(face==="L"){
+      ra=-a.y;
+      rb=-b.y;
+      ca=a.z;
+      cb=b.z;
+    }
+
+    return ra-rb || ca-cb;
+  });
+}
+
+function renderFace(face){
+
+  const faceDiv=document.createElement("div");
+
+  faceDiv.className=`face ${face.toLowerCase()}`;
+
+  let list=getFaceStickers(face);
+
+  sortFace(face,list);
+
+  for(const s of list){
+
+    const el=document.createElement("div");
+
+    el.className="sticker "+COLORS[s.color];
+
+    faceDiv.appendChild(el);
+  }
+
+  return faceDiv;
+}
+
+function renderCube(){
+
+  const cube=document.getElementById("cube");
+
+  cube.innerHTML="";
+
+  cube.appendChild(renderFace("U"));
+  cube.appendChild(renderFace("L"));
+  cube.appendChild(renderFace("F"));
+  cube.appendChild(renderFace("R"));
+  cube.appendChild(renderFace("B"));
+  cube.appendChild(renderFace("D"));
+}
+
+/* =========================================================
+   SCRAMBLE + NEW SOLVE
+   ========================================================= */
+
+let currentScramble=[];
+
+function newScramble(){
+
+  createSolvedCube();
+
+  currentScramble=randomScramble();
+
+  for(const m of currentScramble){
+    applyMove(m);
+  }
+
+  document.getElementById("scramble").textContent=
+    currentScramble.join(" ");
+
+  renderCube();
+}
+
+newScramble();
+
+/* =========================================================
+   TIMER
+   ========================================================= */
 
 let phase="idle";
 
 let inspectionStart=0;
+let inspectionInterval=null;
 
 let solveStart=0;
+let solveInterval=null;
 
-let held=false;
+let holdTimer=null;
+let holding=false;
 
-let armed=false;
+let elapsed=0;
 
-let raf=0;
+const timer=document.getElementById("timer");
+const instruction=document.getElementById("instruction");
 
+function formatTime(ms){
 
-/* =========================
-   RESET CUBE
-========================= */
-
-function resetCube(){
-
-  cube={};
-
-  faces.forEach(f=>{
-    cube[f]=Array(9).fill(f);
-  });
-
+  return (ms/1000).toFixed(2);
 }
 
+function updateSolveTimer(){
 
-/* =========================
-   XOAY MẶT
-========================= */
+  elapsed=Date.now()-solveStart;
 
-function rot(f){
-
-  let a=cube[f];
-
-  cube[f]=[
-    a[6],a[3],a[0],
-    a[7],a[4],a[1],
-    a[8],a[5],a[2]
-  ];
-
+  timer.textContent=formatTime(elapsed);
 }
 
-
-/* =========================
-   U
-========================= */
-
-function U(){
-
-  rot("U");
-
-  let t=cube.F.slice(0,3);
-
-  cube.F.splice(
-    0,3,
-    ...cube.L.slice(0,3)
-  );
-
-  cube.L.splice(
-    0,3,
-    ...cube.B.slice(0,3)
-  );
-
-  cube.B.splice(
-    0,3,
-    ...cube.R.slice(0,3)
-  );
-
-  cube.R.splice(
-    0,3,
-    ...t
-  );
-
-}
-
-
-/* =========================
-   D
-========================= */
-
-function D(){
-
-  rot("D");
-
-  let t=cube.F.slice(6,9);
-
-  cube.F.splice(
-    6,3,
-    ...cube.R.slice(6,9)
-  );
-
-  cube.R.splice(
-    6,3,
-    ...cube.B.slice(6,9)
-  );
-
-  cube.B.splice(
-    6,3,
-    ...cube.L.slice(6,9)
-  );
-
-  cube.L.splice(
-    6,3,
-    ...t
-  );
-
-}
-
-
-/* =========================
-   R
-========================= */
-
-function R(){
-
-  rot("R");
-
-  let t=[
-    cube.U[2],
-    cube.U[5],
-    cube.U[8]
-  ];
-
-  [
-    cube.U[2],
-    cube.U[5],
-    cube.U[8]
-  ]=[
-    cube.F[2],
-    cube.F[5],
-    cube.F[8]
-  ];
-
-  [
-    cube.F[2],
-    cube.F[5],
-    cube.F[8]
-  ]=[
-    cube.D[2],
-    cube.D[5],
-    cube.D[8]
-  ];
-
-  [
-    cube.D[2],
-    cube.D[5],
-    cube.D[8]
-  ]=[
-    cube.B[6],
-    cube.B[3],
-    cube.B[0]
-  ];
-
-  [
-    cube.B[6],
-    cube.B[3],
-    cube.B[0]
-  ]=t;
-
-}
-
-
-/* =========================
-   L
-========================= */
-
-function L(){
-
-  rot("L");
-
-  let t=[
-    cube.U[0],
-    cube.U[3],
-    cube.U[6]
-  ];
-
-  [
-    cube.U[0],
-    cube.U[3],
-    cube.U[6]
-  ]=[
-    cube.B[8],
-    cube.B[5],
-    cube.B[2]
-  ];
-
-  [
-    cube.B[8],
-    cube.B[5],
-    cube.B[2]
-  ]=[
-    cube.D[0],
-    cube.D[3],
-    cube.D[6]
-  ];
-
-  [
-    cube.D[0],
-    cube.D[3],
-    cube.D[6]
-  ]=[
-    cube.F[0],
-    cube.F[3],
-    cube.F[6]
-  ];
-
-  [
-    cube.F[0],
-    cube.F[3],
-    cube.F[6]
-  ]=t;
-
-}
-
-
-/* =========================
-   F
-========================= */
-
-function F(){
-
-  rot("F");
-
-  let t=[
-    cube.U[6],
-    cube.U[7],
-    cube.U[8]
-  ];
-
-  [
-    cube.U[6],
-    cube.U[7],
-    cube.U[8]
-  ]=[
-    cube.L[8],
-    cube.L[5],
-    cube.L[2]
-  ];
-
-  [
-    cube.L[8],
-    cube.L[5],
-    cube.L[2]
-  ]=[
-    cube.D[2],
-    cube.D[1],
-    cube.D[0]
-  ];
-
-  [
-    cube.D[2],
-    cube.D[1],
-    cube.D[0]
-  ]=[
-    cube.R[0],
-    cube.R[3],
-    cube.R[6]
-  ];
-
-  [
-    cube.R[0],
-    cube.R[3],
-    cube.R[6]
-  ]=t;
-
-}
-
-
-/* =========================
-   B
-========================= */
-
-function B(){
-
-  rot("B");
-
-  let t=[
-    cube.U[0],
-    cube.U[1],
-    cube.U[2]
-  ];
-
-  [
-    cube.U[0],
-    cube.U[1],
-    cube.U[2]
-  ]=[
-    cube.R[2],
-    cube.R[5],
-    cube.R[8]
-  ];
-
-  [
-    cube.R[2],
-    cube.R[5],
-    cube.R[8]
-  ]=[
-    cube.D[8],
-    cube.D[7],
-    cube.D[6]
-  ];
-
-  [
-    cube.D[8],
-    cube.D[7],
-    cube.D[6]
-  ]=[
-    cube.L[6],
-    cube.L[3],
-    cube.L[0]
-  ];
-
-  [
-    cube.L[6],
-    cube.L[3],
-    cube.L[0]
-  ]=t;
-
-}
-
-
-/* =========================
-   THỰC HIỆN MOVE
-========================= */
-
-const fn={
-  U,
-  R,
-  D,
-  L,
-  F,
-  B
-};
-
-function move(m){
-
-  let f=m[0];
-
-  let n=
-    m.endsWith("2")
-      ?2
-      :m.endsWith("'")
-        ?3
-        :1;
-
-  for(let i=0;i<n;i++){
-    fn[f]();
-  }
-
-}
-
-
-/* =========================
-   SCRAMBLE 20 MOVE
-========================= */
-
-function makeScramble(){
-
-  const fs=[
-    "R","L","U",
-    "D","F","B"
-  ];
-
-  const ss=[
-    "",
-    "'",
-    "2"
-  ];
-
-  const ax={
-    R:"x",
-    L:"x",
-    U:"y",
-    D:"y",
-    F:"z",
-    B:"z"
-  };
-
-  let a=[];
-
-  let last="";
-
-  let lastAx="";
-
-  while(a.length<20){
-
-    let f=
-      fs[
-        Math.floor(
-          Math.random()*fs.length
-        )
-      ];
-
-    if(
-      f===last ||
-      ax[f]===lastAx
-    ){
-      continue;
-    }
-
-    let s=
-      ss[
-        Math.floor(
-          Math.random()*ss.length
-        )
-      ];
-
-    a.push(f+s);
-
-    last=f;
-
-    lastAx=ax[f];
-
-  }
-
-  return a;
-
-}
-
-
-/* =========================
-   SCRAMBLE MỚI
-========================= */
-
-function newScramble(){
-
-  resetCube();
-
-  scramble=makeScramble();
-
-  scramble.forEach(move);
-
-  document.getElementById(
-    "scramble"
-  ).textContent=
-    scramble.join(" ");
-
-  renderCube();
-
-}
-
-
-/* =========================
-   HIỂN THỊ CUBE
-========================= */
-
-function renderCube(){
-
-  let root=
-    document.getElementById("cube");
-
-  root.innerHTML="";
-
-  faces.forEach(f=>{
-
-    let face=
-      document.createElement("div");
-
-    face.className="face";
-
-    face.id=f;
-
-    cube[f].forEach(c=>{
-
-      let s=
-        document.createElement("div");
-
-      s.className="s";
-
-      s.style.background=
-        COLORS[c];
-
-      face.appendChild(s);
-
-    });
-
-    root.appendChild(face);
-
-  });
-
-}
-
-
-/* =========================
-   TIMER
-========================= */
-
-const timer=
-  document.getElementById("timer");
-
-const hint=
-  document.getElementById("hint");
-
-
-function show(t,c="#fff"){
-
-  timer.textContent=t;
-
-  timer.style.color=c;
-
-}
-
-
-/* =========================
-   INSPECTION
-========================= */
-
-function inspectionLoop(now){
-
-  if(
-    phase!=="inspection"
-  ){
-    return;
-  }
-
-  let left=
-    15-
-    (now-inspectionStart)/1000;
-
-  if(left<=0){
-
-    phase="stopped";
-
-    held=false;
-
-    armed=false;
-
-    show(
-      "DNF",
-      "#ff453a"
-    );
-
-    hint.textContent=
-      "DNF • chạm để inspection mới";
-
-    add({
-      time:null,
-      dnf:true,
-      plus2:false,
-      scramble:scramble.join(" ")
-    });
-
-    newScramble();
-
-    return;
-
-  }
-
-  show(
-    String(Math.ceil(left)),
-    held
-      ?" #39ff6a"
-      :left>8
-        ?" #ff3030"
-        :" #ffd02f"
-  );
-
-  /* sửa màu có khoảng trắng */
-  timer.style.color=
-    held
-      ?" #39ff6a".trim()
-      :left>8
-        ?" #ff3030".trim()
-        :" #ffd02f".trim();
-
-  raf=
-    requestAnimationFrame(
-      inspectionLoop
-    );
-
-}
-
-
-/* =========================
-   BẮT ĐẦU INSPECTION
-========================= */
+/* ================= INSPECTION ================= */
 
 function startInspection(){
 
+  if(phase!=="idle") return;
+
   phase="inspection";
 
-  inspectionStart=
-    performance.now();
+  inspectionStart=Date.now();
 
-  held=false;
+  instruction.textContent=
+    "Giữ để bắt đầu solve";
 
-  armed=false;
+  timer.textContent="15.00";
+  timer.style.color="white";
 
-  show(
-    "15",
-    "#ff3030"
-  );
+  clearInterval(inspectionInterval);
 
-  hint.textContent=
-    "Nhấn GIỮ để xanh";
+  inspectionInterval=setInterval(()=>{
 
-  cancelAnimationFrame(raf);
+    const left=
+      15000-(Date.now()-inspectionStart);
 
-  raf=
-    requestAnimationFrame(
-      inspectionLoop
-    );
+    if(left<=0){
 
-}
+      clearInterval(inspectionInterval);
 
+      timer.textContent="DNF";
+      timer.style.color="#ff3030";
 
-/* =========================
-   NHẤN GIỮ
-========================= */
+      phase="dnf";
 
-function hold(){
+      setTimeout(()=>{
+        resetIdle();
+      },1200);
 
-  if(
-    phase!=="inspection"
-  ){
-    return;
-  }
-
-  held=true;
-
-  armed=true;
-
-  let left=
-    15-
-    (performance.now()-inspectionStart)/1000;
-
-  show(
-    String(
-      Math.max(
-        1,
-        Math.ceil(left)
-      )
-    ),
-    "#39ff6a"
-  );
-
-  hint.textContent=
-    "Thả tay để bắt đầu giải";
-
-}
-
-
-/* =========================
-   THẢ TAY
-========================= */
-
-function release(){
-
-  if(
-    phase!=="inspection" ||
-    !armed
-  ){
-    return;
-  }
-
-  phase="solving";
-
-  held=false;
-
-  armed=false;
-
-  solveStart=
-    performance.now();
-
-  show(
-    "0.00",
-    "#fff"
-  );
-
-  hint.textContent=
-    "Đang giải";
-
-  cancelAnimationFrame(raf);
-
-  raf=
-    requestAnimationFrame(
-      solveLoop
-    );
-
-}
-
-
-/* =========================
-   TIMER GIẢI
-========================= */
-
-function solveLoop(now){
-
-  if(
-    phase!=="solving"
-  ){
-    return;
-  }
-
-  show(
-    (
-      (now-solveStart)/1000
-    ).toFixed(2),
-    "#fff"
-  );
-
-  raf=
-    requestAnimationFrame(
-      solveLoop
-    );
-
-}
-
-
-/* =========================
-   DỪNG TIMER
-========================= */
-
-function stopSolve(){
-
-  if(
-    phase!=="solving"
-  ){
-    return;
-  }
-
-  let t=
-    performance.now()-
-    solveStart;
-
-  phase="stopped";
-
-  cancelAnimationFrame(raf);
-
-  show(
-    (t/1000).toFixed(2),
-    "#fff"
-  );
-
-  hint.textContent=
-    "Chạm để inspection mới";
-
-  add({
-    time:t,
-    dnf:false,
-    plus2:false,
-    scramble:scramble.join(" ")
-  });
-
-  newScramble();
-
-}
-
-
-/* =========================
-   TOÀN BỘ MÀN HÌNH TIMER
-========================= */
-
-document
-  .getElementById("app")
-  .addEventListener(
-    "pointerdown",
-    e=>{
-
-      if(
-        e.target.closest("button")
-      ){
-        return;
-      }
-
-      if(
-        phase==="idle" ||
-        phase==="stopped"
-      ){
-
-        startInspection();
-
-      }else if(
-        phase==="inspection"
-      ){
-
-        hold();
-
-      }else if(
-        phase==="solving"
-      ){
-
-        stopSolve();
-
-      }
-
-    }
-  );
-
-
-document
-  .getElementById("app")
-  .addEventListener(
-    "pointerup",
-    e=>{
-
-      if(
-        e.target.closest("button")
-      ){
-        return;
-      }
-
-      release();
-
-    }
-  );
-
-
-document
-  .getElementById("app")
-  .addEventListener(
-    "pointercancel",
-    release
-  );
-
-
-/* =========================
-   BÀN PHÍM SPACE
-========================= */
-
-document.addEventListener(
-  "keydown",
-  e=>{
-
-    if(
-      e.code!=="Space" ||
-      e.repeat
-    ){
       return;
     }
 
-    e.preventDefault();
+    timer.textContent=
+      (left/1000).toFixed(2);
 
-    if(
-      phase==="idle" ||
-      phase==="stopped"
-    ){
-
-      startInspection();
-
-    }else if(
-      phase==="inspection"
-    ){
-
-      hold();
-
-    }else if(
-      phase==="solving"
-    ){
-
-      stopSolve();
-
+    if(left<=8000){
+      timer.style.color="#ff3030";
+    }else{
+      timer.style.color="#ffd02f";
     }
 
+  },20);
+}
+
+/* ================= HOLD ================= */
+
+function startHold(){
+
+  if(phase!=="inspection") return;
+
+  holding=true;
+
+  timer.style.color="#39ff6a";
+
+  holdTimer=setTimeout(()=>{
+
+    if(!holding) return;
+
+    phase="ready";
+
+    timer.textContent="0.00";
+
+    instruction.textContent=
+      "Thả tay để bắt đầu";
+
+  },350);
+}
+
+function cancelHold(){
+
+  holding=false;
+
+  clearTimeout(holdTimer);
+
+  if(phase==="ready"){
+
+    startSolve();
+
   }
-);
+}
 
+/* ================= SOLVE ================= */
 
-document.addEventListener(
-  "keyup",
-  e=>{
+function startSolve(){
 
-    if(
-      e.code==="Space"
-    ){
+  clearInterval(inspectionInterval);
 
-      e.preventDefault();
+  phase="solve";
 
-      release();
+  solveStart=Date.now();
 
-    }
+  timer.style.color="white";
 
-  }
-);
+  instruction.textContent=
+    "Đang solve";
 
+  clearInterval(solveInterval);
 
-/* =========================
-   HISTORY
-========================= */
+  solveInterval=setInterval(
+    updateSolveTimer,
+    10
+  );
+}
 
-let historyData=[];
+function finishSolve(){
 
-try{
+  if(phase!=="solve") return;
 
-  historyData=
-    JSON.parse(
-      localStorage.getItem(
-        "rubikHistory"
-      )||"[]"
-    );
+  clearInterval(solveInterval);
+
+  elapsed=Date.now()-solveStart;
+
+  timer.textContent=
+    formatTime(elapsed);
+
+  timer.style.color="white";
+
+  instruction.textContent=
+    "Chạm để bắt đầu inspection";
+
+  addSolve(elapsed);
+
+  phase="idle";
+
+  setTimeout(()=>{
+    newScramble();
+  },500);
+}
+
+function resetIdle(){
+
+  clearInterval(inspectionInterval);
+  clearInterval(solveInterval);
+
+  clearTimeout(holdTimer);
+
+  phase="idle";
+  holding=false;
+
+  timer.textContent="0.00";
+  timer.style.color="white";
+
+  instruction.textContent=
+    "Chạm để bắt đầu inspection";
+
+  newScramble();
+}
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+document.addEventListener("pointerdown",e=>{
 
   if(
-    !Array.isArray(historyData)
-  ){
-    historyData=[];
+    e.target.closest(".history-panel") ||
+    e.target.closest(".history-btn")
+  ) return;
+
+  if(phase==="idle"){
+    startInspection();
+    return;
   }
 
-}catch{
+  if(phase==="inspection"){
+    startHold();
+    return;
+  }
 
-  historyData=[];
+  if(phase==="solve"){
+    finishSolve();
+    return;
+  }
 
-}
+});
 
+document.addEventListener("pointerup",e=>{
 
-/* =========================
-   SAVE
-========================= */
+  if(phase==="inspection" || phase==="ready"){
+    cancelHold();
+  }
 
-function save(){
+});
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+let solves=
+  JSON.parse(localStorage.getItem("rubikSolves")||"[]");
+
+function saveSolves(){
 
   localStorage.setItem(
-    "rubikHistory",
-    JSON.stringify(historyData)
+    "rubikSolves",
+    JSON.stringify(solves)
   );
-
-  renderHistory();
-
-  updateStats();
-
 }
 
+function getPB(){
 
-/* =========================
-   ADD SOLVE
-========================= */
+  const valid=
+    solves
+      .filter(x=>!x.dnf)
+      .map(x=>x.time);
 
-function add(x){
+  if(!valid.length) return null;
 
-  historyData.unshift(x);
-
-  save();
-
+  return Math.min(...valid);
 }
-
-
-/* =========================
-   SOLVES + PB
-========================= */
 
 function updateStats(){
 
-  const valid=
-    historyData.filter(
-      x=>
-        !x.dnf &&
-        Number.isFinite(x.time)
-    );
+  document.getElementById("solves").textContent=
+    solves.length;
 
-  document.getElementById(
-    "solves"
-  ).textContent=
-    valid.length;
+  const pb=getPB();
 
-  const pb=
-    valid.length
-      ?Math.min(
-        ...valid.map(
-          x=>x.time
-        )
-      )
-      :null;
-
-  document.getElementById(
-    "pb"
-  ).textContent=
+  document.getElementById("pb").textContent=
     pb===null
-      ?"--"
-      :(pb/1000).toFixed(2);
-
+      ? "--"
+      : formatTime(pb);
 }
 
+function addSolve(ms){
 
-/* =========================
-   HIỂN THỊ HISTORY
-========================= */
+  solves.unshift({
+    time:ms,
+    dnf:false,
+    date:Date.now()
+  });
+
+  saveSolves();
+  updateStats();
+  renderHistory();
+}
 
 function renderHistory(){
 
   const list=
-    document.getElementById(
-      "list"
-    );
-
-  if(
-    !historyData.length
-  ){
-
-    list.innerHTML=
-      '<div class="empty">Chưa có solve.</div>';
-
-    return;
-
-  }
+    document.getElementById("historyList");
 
   list.innerHTML="";
 
-  historyData.forEach(
-    (x,i)=>{
+  if(!solves.length){
 
-      let item=
-        document.createElement(
-          "div"
-        );
+    list.innerHTML=
+      '<div style="text-align:center;color:#777">Chưa có solve</div>';
 
-      item.className="item";
+    return;
+  }
 
+  solves.forEach((s,i)=>{
 
-      let t=
-        document.createElement(
-          "div"
-        );
+    const row=
+      document.createElement("div");
 
-      t.className="time";
+    row.className="solve-row";
 
+    row.innerHTML=`
+      <span>#${solves.length-i}</span>
+      <strong>${s.dnf?"DNF":formatTime(s.time)}</strong>
+      <div class="solve-actions">
+        <button onclick="plusTwo(${i})">+2</button>
+        <button onclick="toggleDNF(${i})">DNF</button>
+        <button onclick="deleteSolve(${i})">×</button>
+      </div>
+    `;
 
-      if(x.dnf){
-
-        t.textContent="DNF";
-
-        t.classList.add(
-          "dnf"
-        );
-
-      }else{
-
-        t.textContent=
-          (x.time/1000).toFixed(2)+
-          (x.plus2?"+2":"");
-
-        if(x.plus2){
-
-          t.classList.add(
-            "p2"
-          );
-
-        }
-
-      }
-
-      item.appendChild(t);
-
-
-      let s=
-        document.createElement(
-          "div"
-        );
-
-      s.className="scr";
-
-      s.textContent=
-        x.scramble;
-
-      item.appendChild(s);
-
-
-      let a=
-        document.createElement(
-          "div"
-        );
-
-      a.className="actions";
-
-
-      if(!x.dnf){
-
-        let p=
-          document.createElement(
-            "button"
-          );
-
-        p.textContent=
-          x.plus2
-            ?"Remove +2"
-            :"+2";
-
-        p.onclick=()=>{
-
-          historyData[i].plus2=
-            !historyData[i].plus2;
-
-          save();
-
-        };
-
-        a.appendChild(p);
-
-
-        let d=
-          document.createElement(
-            "button"
-          );
-
-        d.textContent="DNF";
-
-        d.onclick=()=>{
-
-          historyData[i].dnf=true;
-
-          historyData[i].time=null;
-
-          historyData[i].plus2=false;
-
-          save();
-
-        };
-
-        a.appendChild(d);
-
-      }
-
-
-      let del=
-        document.createElement(
-          "button"
-        );
-
-      del.textContent="Delete";
-
-      del.onclick=()=>{
-
-        historyData.splice(
-          i,
-          1
-        );
-
-        save();
-
-      };
-
-      a.appendChild(del);
-
-
-      item.appendChild(a);
-
-      list.appendChild(item);
-
-    }
-  );
-
+    list.appendChild(row);
+  });
 }
 
+function plusTwo(i){
 
-/* =========================
-   HISTORY PAGE
-========================= */
+  if(solves[i].dnf) return;
 
-document
-  .getElementById("historyBtn")
-  .onclick=e=>{
+  solves[i].time+=2000;
 
-    e.stopPropagation();
+  saveSolves();
+  updateStats();
+  renderHistory();
+}
 
-    document.getElementById(
-      "history"
-    ).style.display="block";
+function toggleDNF(i){
 
-    renderHistory();
+  solves[i].dnf=!solves[i].dnf;
 
-  };
+  saveSolves();
+  updateStats();
+  renderHistory();
+}
 
+function deleteSolve(i){
 
-document
-  .getElementById("back")
-  .onclick=()=>{
+  solves.splice(i,1);
 
-    document.getElementById(
-      "history"
-    ).style.display="none";
+  saveSolves();
+  updateStats();
+  renderHistory();
+}
 
-  };
+document.getElementById("clearAll")
+.addEventListener("click",()=>{
 
+  solves=[];
 
-document
-  .getElementById("clear")
-  .onclick=()=>{
+  saveSolves();
+  updateStats();
+  renderHistory();
 
-    if(
-      confirm(
-        "Xóa toàn bộ lịch sử?"
-      )
-    ){
+});
 
-      historyData=[];
+document.getElementById("historyBtn")
+.addEventListener("click",()=>{
 
-      save();
+  document
+    .getElementById("historyPanel")
+    .classList.add("open");
 
-    }
+});
 
-  };
+document.getElementById("closeHistory")
+.addEventListener("click",()=>{
 
+  document
+    .getElementById("historyPanel")
+    .classList.remove("open");
 
-/* =========================
-   KHỞI ĐỘNG
-========================= */
+});
 
-newScramble();
-
-renderHistory();
+/* ================= INIT ================= */
 
 updateStats();
+renderHistory();
 
 </script>
 
