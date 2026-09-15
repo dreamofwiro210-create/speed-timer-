@@ -2,154 +2,256 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<meta
+  name="viewport"
+  content="width=device-width,
+  initial-scale=1,
+  maximum-scale=1,
+  user-scalable=no"
+>
 
 <title>Speed Timer</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
   margin:0;
   width:100%;
   height:100%;
   overflow:hidden;
   background:#050505;
   color:white;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
 }
 
 body{
   display:flex;
   justify-content:center;
+  touch-action:none;
 }
 
 .app{
   width:100%;
   max-width:700px;
   height:100vh;
-  position:relative;
-  padding:18px 16px 20px;
+
   display:flex;
   flex-direction:column;
   align-items:center;
+
+  padding:14px 14px 18px;
+
+  position:relative;
 }
 
-/* ================= SCRAMBLE ================= */
+/* =========================
+   SCRAMBLE
+========================= */
 
 .scramble{
   width:100%;
-  max-width:650px;
+  max-width:660px;
+
   text-align:center;
-  font-size:25px;
-  line-height:1.35;
+
+  font-size:24px;
   font-weight:700;
-  min-height:70px;
+  line-height:1.35;
+
+  min-height:72px;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:4px 10px;
-  margin-top:8px;
+
+  padding:4px 8px;
+
+  margin-top:10px;
 }
 
-/* ================= INSPECTION ================= */
+/* =========================
+   INSTRUCTION
+========================= */
 
 .instruction{
+  min-height:27px;
+
   color:#777;
-  font-size:19px;
-  margin-top:8px;
-  min-height:28px;
+
+  font-size:18px;
   text-align:center;
+
+  margin-top:3px;
 }
 
-/* ================= TIMER ================= */
+/* =========================
+   TIMER
+========================= */
 
 .timer{
-  font-size:120px;
-  line-height:1;
-  font-weight:700;
-  letter-spacing:-5px;
-  margin-top:65px;
-  height:135px;
+  width:100%;
+
+  height:125px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
+  margin-top:48px;
+
+  font-size:105px;
+  font-weight:700;
+
+  line-height:1;
+
+  letter-spacing:-4px;
+
+  color:white;
 }
 
-/* ================= MINI CUBE ================= */
+/* =========================
+   MINI CUBE
+========================= */
 
 .cube-area{
   width:100%;
+
   display:flex;
   justify-content:center;
-  margin-top:15px;
+  align-items:center;
+
+  margin-top:8px;
+
+  height:205px;
 }
 
 .cube{
-  width:190px;
-  height:190px;
+  width:195px;
+  height:195px;
+
   display:grid;
-  grid-template-columns:repeat(12,15px);
-  grid-template-rows:repeat(9,15px);
+
+  grid-template-columns:
+    repeat(12,15px);
+
+  grid-template-rows:
+    repeat(9,15px);
+
   gap:1px;
+
   justify-content:center;
   align-content:center;
 }
 
-/*
-Net:
+.face{
+  width:47px;
+  height:47px;
 
-              U
-          L   F   R   B
-              D
-*/
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,15px);
+
+  grid-template-rows:
+    repeat(3,15px);
+
+  gap:1px;
+}
+
+.face.u{
+  grid-column:4 / span 3;
+  grid-row:1;
+}
+
+.face.l{
+  grid-column:1 / span 3;
+  grid-row:4;
+}
+
+.face.f{
+  grid-column:4 / span 3;
+  grid-row:4;
+}
+
+.face.r{
+  grid-column:7 / span 3;
+  grid-row:4;
+}
+
+.face.b{
+  grid-column:10 / span 3;
+  grid-row:4;
+}
+
+.face.d{
+  grid-column:4 / span 3;
+  grid-row:7;
+}
 
 .sticker{
   width:15px;
   height:15px;
+
   border-radius:2px;
 }
 
-/* positions in 12x9 net */
+/* =========================
+   COLORS
+========================= */
 
-.u{ grid-column:4 / span 3; }
-.l{ grid-column:1 / span 3; }
-.f{ grid-column:4 / span 3; }
-.r{ grid-column:7 / span 3; }
-.b{ grid-column:10 / span 3; }
-.d{ grid-column:4 / span 3; }
-
-.face{
-  display:grid;
-  grid-template-columns:repeat(3,15px);
-  grid-template-rows:repeat(3,15px);
-  gap:1px;
+.white{
+  background:#f5f5f5;
 }
 
-.face.u{ grid-row:1; }
-.face.l,.face.f,.face.r,.face.b{ grid-row:4; }
-.face.d{ grid-row:7; }
+.yellow{
+  background:#ffd91a;
+}
 
-.white{background:#f5f5f5;}
-.yellow{background:#ffd91a;}
-.green{background:#18c46b;}
-.blue{background:#2388ff;}
-.red{background:#ef3b3b;}
-.orange{background:#ff8717;}
+.green{
+  background:#18c46b;
+}
 
-/* ================= STATS ================= */
+.blue{
+  background:#2388ff;
+}
+
+.red{
+  background:#ef3b3b;
+}
+
+.orange{
+  background:#ff8717;
+}
+
+/* =========================
+   STATS
+========================= */
 
 .stats{
+  width:100%;
+
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:55px;
-  margin-top:18px;
-  font-size:28px;
+
+  gap:42px;
+
+  margin-top:8px;
+
+  font-size:26px;
+
   white-space:nowrap;
 }
 
@@ -157,40 +259,64 @@ Net:
   color:#eee;
 }
 
-/* ================= HISTORY ================= */
+/* =========================
+   HISTORY BUTTON
+========================= */
 
 .history-btn{
   width:75%;
   max-width:430px;
-  height:75px;
+
+  height:70px;
+
   border:0;
   border-radius:30px;
+
   background:#1c1c1c;
+
   color:white;
-  font-size:23px;
+
+  font-size:22px;
   font-weight:700;
-  margin-top:22px;
+
+  margin-top:18px;
 }
 
 .history-btn:active{
   background:#292929;
 }
 
-/* ================= HISTORY PANEL ================= */
+/* =========================
+   HISTORY PANEL
+========================= */
 
 .history-panel{
   position:absolute;
+
   left:0;
   right:0;
   bottom:0;
+
   height:65vh;
+
   background:#151515;
-  border-radius:30px 30px 0 0;
+
+  border-radius:
+    30px 30px 0 0;
+
   padding:22px 18px;
-  transform:translateY(110%);
-  transition:.25s ease;
+
+  transform:
+    translateY(110%);
+
+  transition:
+    transform .25s ease;
+
   z-index:20;
+
   overflow:auto;
+
+  touch-action:auto;
 }
 
 .history-panel.open{
@@ -199,748 +325,1541 @@ Net:
 
 .history-title{
   text-align:center;
+
   font-size:26px;
   font-weight:700;
+
   margin-bottom:20px;
 }
 
 .close-history{
   position:absolute;
+
   right:20px;
-  top:17px;
+  top:15px;
+
   border:0;
   background:none;
+
   color:white;
-  font-size:28px;
+
+  font-size:30px;
 }
 
 .solve-row{
   display:flex;
+
   align-items:center;
   justify-content:space-between;
-  padding:13px 8px;
-  border-bottom:1px solid #333;
-  font-size:20px;
+
+  gap:10px;
+
+  padding:13px 6px;
+
+  border-bottom:
+    1px solid #333;
+
+  font-size:19px;
 }
 
 .solve-actions{
   display:flex;
-  gap:7px;
+  gap:6px;
 }
 
 .solve-actions button{
   border:0;
+
   border-radius:8px;
+
   background:#292929;
+
   color:white;
+
   padding:7px 9px;
+
+  font-size:14px;
 }
 
 .clear-all{
   width:100%;
+
   margin-top:20px;
+
   padding:13px;
+
   border:0;
+
   border-radius:14px;
+
   background:#292929;
+
   color:white;
+
   font-size:17px;
 }
 
-/* ================= MOBILE ================= */
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:500px){
 
   .app{
-    padding-top:12px;
+    padding-top:8px;
   }
 
   .scramble{
-    font-size:22px;
-    min-height:76px;
-    margin-top:3px;
+    font-size:21px;
+    min-height:78px;
+    margin-top:4px;
   }
 
   .instruction{
     font-size:17px;
-    margin-top:4px;
   }
 
   .timer{
-    font-size:95px;
-    height:110px;
-    margin-top:50px;
+    height:115px;
+    margin-top:43px;
+    font-size:94px;
   }
 
   .cube-area{
-    margin-top:5px;
+    height:195px;
+    margin-top:4px;
   }
 
   .cube{
     transform:scale(.92);
-    transform-origin:center;
   }
 
   .stats{
-    font-size:25px;
-    gap:38px;
-    margin-top:8px;
+    font-size:24px;
+    gap:35px;
+    margin-top:5px;
   }
 
   .history-btn{
-    height:68px;
-    margin-top:18px;
+    height:67px;
+    margin-top:16px;
     font-size:21px;
   }
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
-  <div id="scramble" class="scramble"></div>
+  <!-- SCRAMBLE -->
 
-  <div id="instruction" class="instruction">
+  <div
+    id="scramble"
+    class="scramble"
+  ></div>
+
+
+  <!-- INSTRUCTION -->
+
+  <div
+    id="instruction"
+    class="instruction"
+  >
     Chạm để bắt đầu inspection
   </div>
 
-  <div id="timer" class="timer">0.00</div>
+
+  <!-- TIMER -->
+
+  <div
+    id="timer"
+    class="timer"
+  >
+    0.00
+  </div>
+
+
+  <!-- MINI CUBE -->
 
   <div class="cube-area">
-    <div id="cube" class="cube"></div>
+
+    <div
+      id="cube"
+      class="cube"
+    ></div>
+
   </div>
+
+
+  <!-- STATS -->
 
   <div class="stats">
+
     <div class="stat-label">
-      Solves: <span id="solves">0</span>
+      Solves:
+      <span id="solves">0</span>
     </div>
 
     <div class="stat-label">
-      PB: <span id="pb">--</span>
+      PB:
+      <span id="pb">--</span>
     </div>
+
   </div>
 
-  <button class="history-btn" id="historyBtn">
+
+  <!-- HISTORY -->
+
+  <button
+    id="historyBtn"
+    class="history-btn"
+  >
     HISTORY
   </button>
 
-  <div class="history-panel" id="historyPanel">
-    <button class="close-history" id="closeHistory">×</button>
 
-    <div class="history-title">HISTORY</div>
+  <div
+    id="historyPanel"
+    class="history-panel"
+  >
+
+    <button
+      id="closeHistory"
+      class="close-history"
+    >
+      ×
+    </button>
+
+    <div class="history-title">
+      HISTORY
+    </div>
 
     <div id="historyList"></div>
 
-    <button class="clear-all" id="clearAll">
+    <button
+      id="clearAll"
+      class="clear-all"
+    >
       CLEAR ALL
     </button>
+
   </div>
 
 </div>
 
+
 <script>
 
-/* =========================================================
-   3D STICKER CUBE
-   ========================================================= */
+/* =====================================================
+   CUBE
+===================================================== */
 
 const COLORS = {
+
   U:"white",
   D:"yellow",
   F:"green",
   B:"blue",
   R:"red",
   L:"orange"
+
 };
-
-/*
- Mỗi sticker có:
- position = vị trí cubie
- normal   = mặt sticker đang hướng ra ngoài
-
- x: L=-1, M=0, R=1
- y: D=-1, E=0, U=1
- z: B=-1, M=0, F=1
-*/
 
 let stickers = [];
 
+
+/* =====================================================
+   TẠO RUBIK ĐÃ GIẢI
+===================================================== */
+
 function createSolvedCube(){
 
-  stickers=[];
+  stickers = [];
 
-  const faces=[
-    {face:"U", normal:[0,1,0]},
-    {face:"D", normal:[0,-1,0]},
-    {face:"F", normal:[0,0,1]},
-    {face:"B", normal:[0,0,-1]},
-    {face:"R", normal:[1,0,0]},
-    {face:"L", normal:[-1,0,0]}
+  const faces = [
+
+    {
+      face:"U",
+      normal:[0,1,0]
+    },
+
+    {
+      face:"D",
+      normal:[0,-1,0]
+    },
+
+    {
+      face:"F",
+      normal:[0,0,1]
+    },
+
+    {
+      face:"B",
+      normal:[0,0,-1]
+    },
+
+    {
+      face:"R",
+      normal:[1,0,0]
+    },
+
+    {
+      face:"L",
+      normal:[-1,0,0]
+    }
+
   ];
+
 
   for(const f of faces){
 
-    for(let row=0;row<3;row++){
+    for(let row=0; row<3; row++){
 
-      for(let col=0;col<3;col++){
+      for(let col=0; col<3; col++){
 
-        let x=0,y=0,z=0;
+        let x=0;
+        let y=0;
+        let z=0;
+
 
         if(f.face==="U"){
+
           x=col-1;
           y=1;
           z=row-1;
+
         }
 
+
         if(f.face==="D"){
+
           x=col-1;
           y=-1;
           z=1-row;
+
         }
 
+
         if(f.face==="F"){
+
           x=col-1;
           y=1-row;
           z=1;
+
         }
 
+
         if(f.face==="B"){
+
           x=1-col;
           y=1-row;
           z=-1;
+
         }
 
+
         if(f.face==="R"){
+
           x=1;
           y=1-row;
           z=1-col;
+
         }
 
+
         if(f.face==="L"){
+
           x=-1;
           y=1-row;
           z=col-1;
+
         }
 
+
         stickers.push({
+
           color:f.face,
-          x,y,z,
+
+          x:x,
+          y:y,
+          z:z,
+
           nx:f.normal[0],
           ny:f.normal[1],
           nz:f.normal[2]
+
         });
 
       }
+
     }
+
   }
+
 }
 
-/* ================= ROTATION ================= */
+
+/* =====================================================
+   XOAY VECTOR
+===================================================== */
 
 function rotateVector(v,axis,dir){
 
-  let [x,y,z]=v;
+  const x=v[0];
+  const y=v[1];
+  const z=v[2];
+
 
   if(axis==="x"){
 
     if(dir===-1){
-      return [x,z,-y];
+
+      return [
+        x,
+        z,
+        -y
+      ];
+
     }else{
-      return [x,-z,y];
+
+      return [
+        x,
+        -z,
+        y
+      ];
+
     }
 
   }
+
 
   if(axis==="y"){
 
     if(dir===-1){
-      return [-z,y,x];
+
+      return [
+        -z,
+        y,
+        x
+      ];
+
     }else{
-      return [z,y,-x];
+
+      return [
+        z,
+        y,
+        -x
+      ];
+
     }
 
   }
+
 
   if(axis==="z"){
 
     if(dir===-1){
-      return [y,-x,z];
+
+      return [
+        y,
+        -x,
+        z
+      ];
+
     }else{
-      return [-y,x,z];
+
+      return [
+        -y,
+        x,
+        z
+      ];
+
     }
 
   }
+
 }
+
+
+/* =====================================================
+   XOAY MỘT LỚP
+===================================================== */
 
 function rotateLayer(axis,layer,dir){
 
   for(const s of stickers){
 
-    if(
+    const belongs =
+
       (axis==="x" && s.x===layer) ||
+
       (axis==="y" && s.y===layer) ||
-      (axis==="z" && s.z===layer)
-    ){
 
-      let p=rotateVector([s.x,s.y,s.z],axis,dir);
+      (axis==="z" && s.z===layer);
 
-      s.x=p[0];
-      s.y=p[1];
-      s.z=p[2];
 
-      let n=rotateVector([s.nx,s.ny,s.nz],axis,dir);
+    if(!belongs) continue;
 
-      s.nx=n[0];
-      s.ny=n[1];
-      s.nz=n[2];
-    }
+
+    const p =
+      rotateVector(
+        [s.x,s.y,s.z],
+        axis,
+        dir
+      );
+
+
+    s.x=p[0];
+    s.y=p[1];
+    s.z=p[2];
+
+
+    const n =
+      rotateVector(
+        [s.nx,s.ny,s.nz],
+        axis,
+        dir
+      );
+
+
+    s.nx=n[0];
+    s.ny=n[1];
+    s.nz=n[2];
+
   }
+
 }
 
-/* ================= SINGMASTER MOVES ================= */
+
+/* =====================================================
+   MOVE
+===================================================== */
 
 function move(face){
 
   switch(face){
 
     case "R":
-      rotateLayer("x",1,-1);
+
+      rotateLayer(
+        "x",
+        1,
+        -1
+      );
+
       break;
+
 
     case "L":
-      rotateLayer("x",-1,1);
+
+      rotateLayer(
+        "x",
+        -1,
+        1
+      );
+
       break;
+
 
     case "U":
-      rotateLayer("y",1,-1);
+
+      rotateLayer(
+        "y",
+        1,
+        -1
+      );
+
       break;
+
 
     case "D":
-      rotateLayer("y",-1,1);
+
+      rotateLayer(
+        "y",
+        -1,
+        1
+      );
+
       break;
+
 
     case "F":
-      rotateLayer("z",1,-1);
+
+      rotateLayer(
+        "z",
+        1,
+        -1
+      );
+
       break;
 
+
     case "B":
-      rotateLayer("z",-1,1);
+
+      rotateLayer(
+        "z",
+        -1,
+        1
+      );
+
       break;
+
   }
+
 }
+
+
+/* =====================================================
+   ÁP DỤNG MOVE
+===================================================== */
 
 function applyMove(m){
 
-  let face=m[0];
+  const face=m[0];
+
 
   move(face);
 
+
   if(m.includes("2")){
+
     move(face);
+
   }
+
 }
 
-/* =========================================================
-   SCRAMBLE
-   ========================================================= */
 
-const faces=["R","L","U","D","F","B"];
-const axes={
-  R:"x",L:"x",
-  U:"y",D:"y",
-  F:"z",B:"z"
+/* =====================================================
+   SCRAMBLE
+===================================================== */
+
+const faces = [
+  "R",
+  "L",
+  "U",
+  "D",
+  "F",
+  "B"
+];
+
+
+const axes = {
+
+  R:"x",
+  L:"x",
+
+  U:"y",
+  D:"y",
+
+  F:"z",
+  B:"z"
+
 };
 
-function randomScramble(){
 
-  let result=[];
+function makeScramble(){
+
+  const result=[];
+
   let lastFace=null;
   let lastAxis=null;
 
+
   while(result.length<20){
 
-    const face=
-      faces[Math.floor(Math.random()*faces.length)];
+    const face =
+      faces[
+        Math.floor(
+          Math.random()*faces.length
+        )
+      ];
+
 
     const axis=axes[face];
 
-    if(face===lastFace) continue;
-    if(axis===lastAxis) continue;
 
-    const suffixes=["","'","2"];
-    const suffix=
-      suffixes[Math.floor(Math.random()*suffixes.length)];
+    if(face===lastFace){
+      continue;
+    }
 
-    result.push(face+suffix);
+
+    if(axis===lastAxis){
+      continue;
+    }
+
+
+    const suffixes=[
+      "",
+      "'",
+      "2"
+    ];
+
+
+    const suffix =
+      suffixes[
+        Math.floor(
+          Math.random()*suffixes.length
+        )
+      ];
+
+
+    result.push(
+      face+suffix
+    );
+
 
     lastFace=face;
     lastAxis=axis;
+
   }
 
+
   return result;
+
 }
 
-/* =========================================================
-   MINI CUBE RENDER
-   ========================================================= */
+
+/* =====================================================
+   RENDER FACE
+===================================================== */
 
 function getFaceStickers(face){
 
   return stickers.filter(s=>{
 
-    if(face==="U") return s.ny===1;
-    if(face==="D") return s.ny===-1;
-    if(face==="F") return s.nz===1;
-    if(face==="B") return s.nz===-1;
-    if(face==="R") return s.nx===1;
-    if(face==="L") return s.nx===-1;
+    if(face==="U")
+      return s.ny===1;
+
+    if(face==="D")
+      return s.ny===-1;
+
+    if(face==="F")
+      return s.nz===1;
+
+    if(face==="B")
+      return s.nz===-1;
+
+    if(face==="R")
+      return s.nx===1;
+
+    if(face==="L")
+      return s.nx===-1;
 
   });
+
 }
+
+
+/* =====================================================
+   SORT STICKER TRÊN MỖI MẶT
+===================================================== */
 
 function sortFace(face,list){
 
   return list.sort((a,b)=>{
 
-    let ra,rb,ca,cb;
+    let ar,br,ac,bc;
+
 
     if(face==="U"){
-      ra=-a.z;
-      rb=-b.z;
-      ca=a.x;
-      cb=b.x;
+
+      ar=-a.z;
+      br=-b.z;
+
+      ac=a.x;
+      bc=b.x;
+
     }
 
-    if(face==="D"){
-      ra=a.z;
-      rb=b.z;
-      ca=a.x;
-      cb=b.x;
+
+    else if(face==="D"){
+
+      ar=a.z;
+      br=b.z;
+
+      ac=a.x;
+      bc=b.x;
+
     }
 
-    if(face==="F"){
-      ra=-a.y;
-      rb=-b.y;
-      ca=a.x;
-      cb=b.x;
+
+    else if(face==="F"){
+
+      ar=-a.y;
+      br=-b.y;
+
+      ac=a.x;
+      bc=b.x;
+
     }
 
-    if(face==="B"){
-      ra=-a.y;
-      rb=-b.y;
-      ca=-a.x;
-      cb=-b.x;
+
+    else if(face==="B"){
+
+      ar=-a.y;
+      br=-b.y;
+
+      ac=-a.x;
+      bc=-b.x;
+
     }
 
-    if(face==="R"){
-      ra=-a.y;
-      rb=-b.y;
-      ca=-a.z;
-      cb=-b.z;
+
+    else if(face==="R"){
+
+      ar=-a.y;
+      br=-b.y;
+
+      ac=-a.z;
+      bc=-b.z;
+
     }
 
-    if(face==="L"){
-      ra=-a.y;
-      rb=-b.y;
-      ca=a.z;
-      cb=b.z;
+
+    else{
+
+      ar=-a.y;
+      br=-b.y;
+
+      ac=a.z;
+      bc=b.z;
+
     }
 
-    return ra-rb || ca-cb;
+
+    return (
+      ar-br ||
+      ac-bc
+    );
+
   });
+
 }
+
+
+/* =====================================================
+   RENDER MỘT MẶT
+===================================================== */
 
 function renderFace(face){
 
-  const faceDiv=document.createElement("div");
+  const faceDiv =
+    document.createElement("div");
 
-  faceDiv.className=`face ${face.toLowerCase()}`;
 
-  let list=getFaceStickers(face);
+  faceDiv.className =
+    "face "+face.toLowerCase();
 
-  sortFace(face,list);
+
+  let list =
+    getFaceStickers(face);
+
+
+  sortFace(
+    face,
+    list
+  );
+
 
   for(const s of list){
 
-    const el=document.createElement("div");
+    const el =
+      document.createElement("div");
 
-    el.className="sticker "+COLORS[s.color];
+
+    el.className =
+      "sticker "+
+      COLORS[s.color];
+
 
     faceDiv.appendChild(el);
+
   }
 
+
   return faceDiv;
+
 }
+
+
+/* =====================================================
+   RENDER CUBE
+===================================================== */
 
 function renderCube(){
 
-  const cube=document.getElementById("cube");
+  const cube =
+    document.getElementById("cube");
+
 
   cube.innerHTML="";
 
-  cube.appendChild(renderFace("U"));
-  cube.appendChild(renderFace("L"));
-  cube.appendChild(renderFace("F"));
-  cube.appendChild(renderFace("R"));
-  cube.appendChild(renderFace("B"));
-  cube.appendChild(renderFace("D"));
+
+  cube.appendChild(
+    renderFace("U")
+  );
+
+  cube.appendChild(
+    renderFace("L")
+  );
+
+  cube.appendChild(
+    renderFace("F")
+  );
+
+  cube.appendChild(
+    renderFace("R")
+  );
+
+  cube.appendChild(
+    renderFace("B")
+  );
+
+  cube.appendChild(
+    renderFace("D")
+  );
+
 }
 
-/* =========================================================
-   SCRAMBLE + NEW SOLVE
-   ========================================================= */
+
+/* =====================================================
+   NEW SCRAMBLE
+===================================================== */
 
 let currentScramble=[];
+
 
 function newScramble(){
 
   createSolvedCube();
 
-  currentScramble=randomScramble();
+
+  currentScramble =
+    makeScramble();
+
 
   for(const m of currentScramble){
+
     applyMove(m);
+
   }
 
-  document.getElementById("scramble").textContent=
+
+  document.getElementById(
+    "scramble"
+  ).textContent =
     currentScramble.join(" ");
 
+
   renderCube();
+
 }
+
 
 newScramble();
 
-/* =========================================================
-   TIMER
-   ========================================================= */
+
+/* =====================================================
+   TIMER VARIABLES
+===================================================== */
 
 let phase="idle";
 
 let inspectionStart=0;
+
 let inspectionInterval=null;
 
-let solveStart=0;
-let solveInterval=null;
+let inspectionGreen=false;
+
+let holding=false;
 
 let holdTimer=null;
-let holding=false;
+
+let solveStart=0;
+
+let solveInterval=null;
 
 let elapsed=0;
 
-const timer=document.getElementById("timer");
-const instruction=document.getElementById("instruction");
+
+const timer =
+  document.getElementById(
+    "timer"
+  );
+
+
+const instruction =
+  document.getElementById(
+    "instruction"
+  );
+
+
+/* =====================================================
+   FORMAT SOLVE TIME
+===================================================== */
 
 function formatTime(ms){
 
-  return (ms/1000).toFixed(2);
+  return (
+    ms / 1000
+  ).toFixed(2);
+
 }
+
+
+/* =====================================================
+   UPDATE SOLVE
+===================================================== */
 
 function updateSolveTimer(){
 
-  elapsed=Date.now()-solveStart;
+  elapsed =
+    performance.now() -
+    solveStart;
 
-  timer.textContent=formatTime(elapsed);
+
+  timer.textContent =
+    formatTime(elapsed);
+
 }
 
-/* ================= INSPECTION ================= */
+
+/* =====================================================
+   BẮT ĐẦU INSPECTION
+===================================================== */
 
 function startInspection(){
 
-  if(phase!=="idle") return;
+  if(phase!=="idle")
+    return;
+
 
   phase="inspection";
 
-  inspectionStart=Date.now();
+  inspectionGreen=false;
 
-  instruction.textContent=
+  inspectionStart =
+    performance.now();
+
+
+  instruction.textContent =
     "Giữ để bắt đầu solve";
 
-  timer.textContent="15.00";
+
+  timer.textContent="15";
+
   timer.style.color="white";
 
-  clearInterval(inspectionInterval);
 
-  inspectionInterval=setInterval(()=>{
+  clearInterval(
+    inspectionInterval
+  );
 
-    const left=
-      15000-(Date.now()-inspectionStart);
 
-    if(left<=0){
+  inspectionInterval =
+    setInterval(
+      updateInspection,
+      40
+    );
 
-      clearInterval(inspectionInterval);
-
-      timer.textContent="DNF";
-      timer.style.color="#ff3030";
-
-      phase="dnf";
-
-      setTimeout(()=>{
-        resetIdle();
-      },1200);
-
-      return;
-    }
-
-    timer.textContent=
-      (left/1000).toFixed(2);
-
-    if(left<=8000){
-      timer.style.color="#ff3030";
-    }else{
-      timer.style.color="#ffd02f";
-    }
-
-  },20);
 }
 
-/* ================= HOLD ================= */
+
+/* =====================================================
+   UPDATE INSPECTION
+===================================================== */
+
+function updateInspection(){
+
+  if(phase!=="inspection")
+    return;
+
+
+  const passed =
+    performance.now() -
+    inspectionStart;
+
+
+  const left =
+    Math.max(
+      0,
+      15000-passed
+    );
+
+
+  /*
+    CHỈ HIỆN GIÂY
+    15 → 14 → ... → 1
+  */
+
+  const seconds =
+    Math.ceil(
+      left/1000
+    );
+
+
+  timer.textContent =
+    seconds;
+
+
+  /*
+    XANH KHI ĐANG GIỮ
+  */
+
+  if(inspectionGreen){
+
+    timer.style.color =
+      "#39ff6a";
+
+  }
+
+  /*
+    8 GIÂY TRỞ XUỐNG → ĐỎ
+  */
+
+  else if(left<=8000){
+
+    timer.style.color =
+      "#ff3030";
+
+  }
+
+  else{
+
+    timer.style.color =
+      "#ffd02f";
+
+  }
+
+
+  /*
+    HẾT 15 GIÂY
+  */
+
+  if(left<=0){
+
+    clearInterval(
+      inspectionInterval
+    );
+
+
+    inspectionInterval=null;
+
+
+    timer.textContent =
+      "DNF";
+
+
+    timer.style.color =
+      "#ff3030";
+
+
+    instruction.textContent =
+      "Inspection hết giờ";
+
+
+    phase="dnf";
+
+
+    setTimeout(()=>{
+
+      resetIdle();
+
+    },1200);
+
+  }
+
+}
+
+
+/* =====================================================
+   BẮT ĐẦU GIỮ
+===================================================== */
 
 function startHold(){
 
-  if(phase!=="inspection") return;
+  if(phase!=="inspection")
+    return;
+
 
   holding=true;
 
-  timer.style.color="#39ff6a";
 
-  holdTimer=setTimeout(()=>{
+  clearTimeout(
+    holdTimer
+  );
 
-    if(!holding) return;
 
-    phase="ready";
+  /*
+    Sau 350ms:
+    → XANH
+    → KHÔNG DỪNG ĐẾM
+  */
 
-    timer.textContent="0.00";
+  holdTimer =
+    setTimeout(()=>{
 
-    instruction.textContent=
-      "Thả tay để bắt đầu";
+      if(!holding)
+        return;
 
-  },350);
+      if(phase!=="inspection")
+        return;
+
+
+      inspectionGreen=true;
+
+
+      timer.style.color =
+        "#39ff6a";
+
+
+      instruction.textContent =
+        "Thả tay để bắt đầu solve";
+
+    },350);
+
 }
+
+
+/* =====================================================
+   THẢ TAY
+===================================================== */
 
 function cancelHold(){
 
+  clearTimeout(
+    holdTimer
+  );
+
+
+  holdTimer=null;
+
+
+  if(!holding)
+    return;
+
+
   holding=false;
 
-  clearTimeout(holdTimer);
 
-  if(phase==="ready"){
+  /*
+    Nếu DNF rồi thì không làm gì
+  */
+
+  if(phase==="dnf")
+    return;
+
+
+  /*
+    ĐÃ XANH
+    → THẢ = START SOLVE
+  */
+
+  if(
+    phase==="inspection" &&
+    inspectionGreen
+  ){
 
     startSolve();
 
+    return;
+
   }
+
+
+  /*
+    Chưa xanh:
+    vẫn inspection
+  */
+
+  if(phase==="inspection"){
+
+    if(
+      Date.now() -
+      inspectionStart < 8000
+    ){
+
+      timer.style.color =
+        "#ffd02f";
+
+    }
+    else{
+
+      timer.style.color =
+        "#ff3030";
+
+    }
+
+  }
+
 }
 
-/* ================= SOLVE ================= */
+
+/* =====================================================
+   START SOLVE
+===================================================== */
 
 function startSolve(){
 
-  clearInterval(inspectionInterval);
+  clearInterval(
+    inspectionInterval
+  );
+
+  inspectionInterval=null;
+
+
+  clearTimeout(
+    holdTimer
+  );
+
+  holdTimer=null;
+
+
+  holding=false;
+
+  inspectionGreen=false;
+
 
   phase="solve";
 
-  solveStart=Date.now();
 
-  timer.style.color="white";
+  solveStart =
+    performance.now();
 
-  instruction.textContent=
+
+  elapsed=0;
+
+
+  timer.textContent =
+    "0.00";
+
+
+  timer.style.color =
+    "white";
+
+
+  instruction.textContent =
     "Đang solve";
 
-  clearInterval(solveInterval);
 
-  solveInterval=setInterval(
-    updateSolveTimer,
-    10
+  clearInterval(
+    solveInterval
   );
+
+
+  solveInterval =
+    setInterval(
+      updateSolveTimer,
+      10
+    );
+
 }
+
+
+/* =====================================================
+   FINISH SOLVE
+===================================================== */
 
 function finishSolve(){
 
-  if(phase!=="solve") return;
+  if(phase!=="solve")
+    return;
 
-  clearInterval(solveInterval);
 
-  elapsed=Date.now()-solveStart;
+  clearInterval(
+    solveInterval
+  );
 
-  timer.textContent=
+  solveInterval=null;
+
+
+  elapsed =
+    performance.now() -
+    solveStart;
+
+
+  timer.textContent =
     formatTime(elapsed);
 
-  timer.style.color="white";
 
-  instruction.textContent=
+  timer.style.color =
+    "white";
+
+
+  instruction.textContent =
     "Chạm để bắt đầu inspection";
+
 
   addSolve(elapsed);
 
+
   phase="idle";
 
+
   setTimeout(()=>{
+
     newScramble();
+
   },500);
+
 }
+
+
+/* =====================================================
+   RESET
+===================================================== */
 
 function resetIdle(){
 
-  clearInterval(inspectionInterval);
-  clearInterval(solveInterval);
+  clearInterval(
+    inspectionInterval
+  );
 
-  clearTimeout(holdTimer);
+  clearInterval(
+    solveInterval
+  );
+
+  clearTimeout(
+    holdTimer
+  );
+
+
+  inspectionInterval=null;
+  solveInterval=null;
+  holdTimer=null;
+
 
   phase="idle";
+
   holding=false;
 
-  timer.textContent="0.00";
-  timer.style.color="white";
+  inspectionGreen=false;
 
-  instruction.textContent=
+
+  timer.textContent =
+    "0.00";
+
+
+  timer.style.color =
+    "white";
+
+
+  instruction.textContent =
     "Chạm để bắt đầu inspection";
 
+
   newScramble();
+
 }
 
-/* =========================================================
+
+/* =====================================================
    INPUT
-   ========================================================= */
+===================================================== */
 
-document.addEventListener("pointerdown",e=>{
+document.addEventListener(
+  "pointerdown",
+  function(e){
 
-  if(
-    e.target.closest(".history-panel") ||
-    e.target.closest(".history-btn")
-  ) return;
+    /*
+      Không để click trong history
+      ảnh hưởng timer
+    */
 
-  if(phase==="idle"){
-    startInspection();
-    return;
+    if(
+      e.target.closest(
+        ".history-panel"
+      )
+    )
+      return;
+
+
+    if(
+      e.target.closest(
+        ".history-btn"
+      )
+    )
+      return;
+
+
+    if(phase==="idle"){
+
+      startInspection();
+
+      return;
+
+    }
+
+
+    if(phase==="inspection"){
+
+      startHold();
+
+      return;
+
+    }
+
+
+    if(phase==="solve"){
+
+      finishSolve();
+
+      return;
+
+    }
+
   }
+);
 
-  if(phase==="inspection"){
-    startHold();
-    return;
+
+document.addEventListener(
+  "pointerup",
+  function(){
+
+    if(
+      phase==="inspection"
+    ){
+
+      cancelHold();
+
+    }
+
   }
+);
 
-  if(phase==="solve"){
-    finishSolve();
-    return;
+
+document.addEventListener(
+  "pointercancel",
+  function(){
+
+    if(
+      phase==="inspection"
+    ){
+
+      cancelHold();
+
+    }
+
   }
+);
 
-});
 
-document.addEventListener("pointerup",e=>{
-
-  if(phase==="inspection" || phase==="ready"){
-    cancelHold();
-  }
-
-});
-
-/* =========================================================
+/* =====================================================
    HISTORY
-   ========================================================= */
+===================================================== */
 
-let solves=
-  JSON.parse(localStorage.getItem("rubikSolves")||"[]");
+let solves =
+  JSON.parse(
+    localStorage.getItem(
+      "rubikSolves"
+    ) || "[]"
+  );
+
 
 function saveSolves(){
 
@@ -948,143 +1867,316 @@ function saveSolves(){
     "rubikSolves",
     JSON.stringify(solves)
   );
+
 }
+
+
+/* =====================================================
+   PB
+===================================================== */
 
 function getPB(){
 
-  const valid=
+  const valid =
     solves
-      .filter(x=>!x.dnf)
-      .map(x=>x.time);
+      .filter(
+        s => !s.dnf
+      )
+      .map(
+        s => s.time
+      );
 
-  if(!valid.length) return null;
 
-  return Math.min(...valid);
+  if(!valid.length)
+    return null;
+
+
+  return Math.min(
+    ...valid
+  );
+
 }
+
+
+/* =====================================================
+   UPDATE STATS
+===================================================== */
 
 function updateStats(){
 
-  document.getElementById("solves").textContent=
+  document.getElementById(
+    "solves"
+  ).textContent =
     solves.length;
 
-  const pb=getPB();
 
-  document.getElementById("pb").textContent=
+  const pb =
+    getPB();
+
+
+  document.getElementById(
+    "pb"
+  ).textContent =
+
     pb===null
       ? "--"
       : formatTime(pb);
+
 }
+
+
+/* =====================================================
+   ADD SOLVE
+===================================================== */
 
 function addSolve(ms){
 
   solves.unshift({
+
     time:ms,
+
     dnf:false,
+
     date:Date.now()
+
   });
 
+
   saveSolves();
+
   updateStats();
+
   renderHistory();
+
 }
+
+
+/* =====================================================
+   RENDER HISTORY
+===================================================== */
 
 function renderHistory(){
 
-  const list=
-    document.getElementById("historyList");
+  const list =
+    document.getElementById(
+      "historyList"
+    );
+
 
   list.innerHTML="";
 
+
   if(!solves.length){
 
-    list.innerHTML=
-      '<div style="text-align:center;color:#777">Chưa có solve</div>';
+    list.innerHTML =
+      `
+      <div
+        style="
+          text-align:center;
+          color:#777;
+          padding:20px;
+        "
+      >
+        Chưa có solve
+      </div>
+      `;
 
     return;
+
   }
 
-  solves.forEach((s,i)=>{
 
-    const row=
-      document.createElement("div");
+  solves.forEach(
+    (s,i)=>{
 
-    row.className="solve-row";
+      const row =
+        document.createElement(
+          "div"
+        );
 
-    row.innerHTML=`
-      <span>#${solves.length-i}</span>
-      <strong>${s.dnf?"DNF":formatTime(s.time)}</strong>
-      <div class="solve-actions">
-        <button onclick="plusTwo(${i})">+2</button>
-        <button onclick="toggleDNF(${i})">DNF</button>
-        <button onclick="deleteSolve(${i})">×</button>
-      </div>
-    `;
 
-    list.appendChild(row);
-  });
+      row.className =
+        "solve-row";
+
+
+      row.innerHTML = `
+
+        <span>
+          #${solves.length-i}
+        </span>
+
+        <strong>
+          ${
+            s.dnf
+              ? "DNF"
+              : formatTime(s.time)
+          }
+        </strong>
+
+        <div class="solve-actions">
+
+          <button
+            onclick="plusTwo(${i})"
+          >
+            +2
+          </button>
+
+          <button
+            onclick="toggleDNF(${i})"
+          >
+            DNF
+          </button>
+
+          <button
+            onclick="deleteSolve(${i})"
+          >
+            ×
+          </button>
+
+        </div>
+
+      `;
+
+
+      list.appendChild(row);
+
+    }
+  );
+
 }
+
+
+/* =====================================================
+   +2
+===================================================== */
 
 function plusTwo(i){
 
-  if(solves[i].dnf) return;
+  if(solves[i].dnf)
+    return;
 
-  solves[i].time+=2000;
+
+  solves[i].time +=
+    2000;
+
 
   saveSolves();
+
   updateStats();
+
   renderHistory();
+
 }
+
+
+/* =====================================================
+   DNF
+===================================================== */
 
 function toggleDNF(i){
 
-  solves[i].dnf=!solves[i].dnf;
+  solves[i].dnf =
+    !solves[i].dnf;
+
 
   saveSolves();
+
   updateStats();
+
   renderHistory();
+
 }
+
+
+/* =====================================================
+   DELETE
+===================================================== */
 
 function deleteSolve(i){
 
-  solves.splice(i,1);
+  solves.splice(
+    i,
+    1
+  );
+
 
   saveSolves();
+
   updateStats();
+
   renderHistory();
+
 }
 
-document.getElementById("clearAll")
-.addEventListener("click",()=>{
 
-  solves=[];
+/* =====================================================
+   CLEAR ALL
+===================================================== */
 
-  saveSolves();
-  updateStats();
-  renderHistory();
+document
+  .getElementById("clearAll")
+  .addEventListener(
+    "click",
+    function(){
 
-});
+      solves=[];
 
-document.getElementById("historyBtn")
-.addEventListener("click",()=>{
+      saveSolves();
 
-  document
-    .getElementById("historyPanel")
-    .classList.add("open");
+      updateStats();
 
-});
+      renderHistory();
 
-document.getElementById("closeHistory")
-.addEventListener("click",()=>{
+    }
+  );
 
-  document
-    .getElementById("historyPanel")
-    .classList.remove("open");
 
-});
+/* =====================================================
+   OPEN HISTORY
+===================================================== */
 
-/* ================= INIT ================= */
+document
+  .getElementById("historyBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      document
+        .getElementById(
+          "historyPanel"
+        )
+        .classList.add("open");
+
+    }
+  );
+
+
+/* =====================================================
+   CLOSE HISTORY
+===================================================== */
+
+document
+  .getElementById("closeHistory")
+  .addEventListener(
+    "click",
+    function(){
+
+      document
+        .getElementById(
+          "historyPanel"
+        )
+        .classList.remove("open");
+
+    }
+  );
+
+
+/* =====================================================
+   INIT
+===================================================== */
 
 updateStats();
+
 renderHistory();
 
 </script>
